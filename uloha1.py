@@ -23,10 +23,17 @@ def g_all(a, a2):
         'potrubi': math.sqrt(c_sqr - a_sqr) + roz_x
     }
 
-def prepis_input(input):
-    box_size = int(input[0])
-    a_raw = list(map(int, input[1].split()))
-    a2_raw = list(map(int, input[2].split()))
+def prepis_inp(inp):
+    
+    box_size = int(inp[0])
+    try:
+        a_raw = list(map(int, inp[1].split()))
+        a2_raw = list(map(int, inp[2].split()))
+
+    except:
+        return False
+    if a_raw == [] or a2_raw == []:
+        return False
     a = {'x': a_raw[0], 'y': a_raw[1], 'z': a_raw[2]}
     a2 = {'x': a2_raw[0], 'y': a2_raw[1], 'z': a2_raw[2]}
     return {'box_size': box_size, 'a': a, 'a2': a2}
@@ -34,8 +41,8 @@ def prepis_input(input):
 def xyz_check(c):
     return all(isinstance(num, (int, float)) for num in [c['x'], c['y'], c['z']])
 
-def validate(input, box_size, a, a2):
-    if len(input) != 4 or not xyz_check(a) or not xyz_check(a2):
+def validate(inp, box_size, a, a2):
+    if len(inp) != 4 or not xyz_check(a) or not xyz_check(a2):
         return False
 
     points = [a['x'], a2['x']]
@@ -56,13 +63,17 @@ file_names = [
 
 for file_name in file_names:
     with open(file_name, 'r') as file:
-        input_data = file.read().split('\n')
-    data = prepis_input(input)
+        inp_data = file.read().split('\n')
+    data = prepis_inp(inp_data)
+    if not data:
+        print('Nespravny vstup')
+        print('===================')
+        continue
     box_size, a, a2 = data['box_size'], data['a'], data['a2']
-    valid_input = validate(input, box_size, a, a2)
+    valid_inp = validate(inp_data, box_size, a, a2)
     lengths = None
 
-    if not valid_input:
+    if not valid_inp:
         print(f"Rozmer :\n{box_size}")
     
         if xyz_check(a):
@@ -73,7 +84,9 @@ for file_name in file_names:
         if lengths:
           print(f"Delka potrubi:\n{lengths['potrubi']}")
           print(f"Delka hadice:\n{lengths['hadice']}")
-          print('Nespravny vstup')
+        
+        print('Nespravny vstup')
+        print('===================')
         continue
     
     if a2['z'] == box_size:
@@ -115,7 +128,7 @@ for file_name in file_names:
     if lengths:
           print(f"Delka potrubi:\n{lengths['potrubi']}")
           print(f"Delka hadice:\n{lengths['hadice']}")
-          print('Nespravny vstup')
 
 
     print('===================')
+
