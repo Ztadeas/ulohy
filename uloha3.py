@@ -14,10 +14,16 @@ def nextPalindrome(From, radix):
   print("-------------------------")
   
   if radix > 36 or radix < 2:
+    print(From)
     return 0
   
   a = 0
+
+  if From >= 18446744073709551615:
+    print(From)
+    return 0
   while True:
+    
     n = From
     palindrom = []
     while n != 0:
